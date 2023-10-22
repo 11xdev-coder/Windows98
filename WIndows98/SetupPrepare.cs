@@ -60,7 +60,7 @@ namespace Windows98
                     
                     Controls.Add(Extensions.AddSetupLabelText("To continue with Setup, press ENTER.", 32f, new Point(100, 800), _privateFonts));
                     
-                    Controls.Add(Extensions.ShowControlsPanel(false, _privateFonts));
+                    Controls.Add(Extensions.ShowControlsPanel(false, true, Colors.BiosGray, _privateFonts));
                     
                     break;
                 case 2:
@@ -90,7 +90,7 @@ namespace Windows98
                                                               "\nand then press ENTER.", 32f, new Point(100, 800), _privateFonts));
                     
                     
-                    Controls.Add(Extensions.ShowControlsPanel(true, _privateFonts));
+                    Controls.Add(Extensions.ShowControlsPanel(false, false, Colors.BiosGray, _privateFonts));
                     break;
                 case 3:
                     double availableSpace = Extensions.GetDiskSize();
@@ -128,7 +128,7 @@ namespace Windows98
                     
                     // TODO: ADD A TEXT FILE WITH largeDiskSupport = true/false
                     
-                    Controls.Add(Extensions.ShowControlsPanel(true, _privateFonts));
+                    Controls.Add(Extensions.ShowControlsPanel(false, false, Colors.BiosGray, _privateFonts));
                     
                     break;
                 case 4:
@@ -209,6 +209,9 @@ namespace Windows98
                 case Keys.F3:
                     ShowConfirmationWindow();
                     break;
+                case Keys.F1:
+                    ShowHelpWindow();
+                    break;
                 case Keys.Enter:
                 {
                     if (_labels.Count > 0 && _selectedIndex >= 0 && _selectedIndex < _labels.Count)
@@ -233,9 +236,9 @@ namespace Windows98
 
         private void ShowConfirmationWindow()
         {
-            SetupPrepareConfirmExit confirmationWindow = new SetupPrepareConfirmExit();
+            SetupPrepareConfirmExit confirmationWindow = new SetupPrepareConfirmExit(false);
             confirmationWindow.ShowDialog(this);
-            confirmationWindow.BringToFront();  // This will bring the confirmation window to the front
+            confirmationWindow.BringToFront(); 
 
             if (confirmationWindow.IsConfirmed)
             {
@@ -243,5 +246,11 @@ namespace Windows98
             }
         }
 
+        private void ShowHelpWindow()
+        {
+            SetupPrepareHelp helpWindow = new SetupPrepareHelp(_currentStep);
+            helpWindow.ShowDialog(this);
+            helpWindow.BringToFront();
+        }
     }
 }
